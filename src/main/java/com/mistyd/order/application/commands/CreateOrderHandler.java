@@ -44,7 +44,7 @@ public class CreateOrderHandler implements CreateOrderUseCase {
 
         // reserve stock
         BaseResponse<Boolean>reserveRes=stockServicePort.reserveStock(order.getItems());
-        if(reserveRes.getCode()!=0){
+        if(reserveRes.getCode()!=0 || !reserveRes.getData()){
             return ResultUtils.error(ErrorCode.SYSTEM_ERROR, reserveRes.getDescription());
         }
 
@@ -53,17 +53,19 @@ public class CreateOrderHandler implements CreateOrderUseCase {
         order.setStatus(OrderStatusEnum.CREATED);
         boolean saveRes=orderRepositoryPort.save(order);
         if(!saveRes){
+            stockServicePort.releaseStock(order.getItems());
             return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "Save order error");
         }
 
         OrderCreateEvent orderCreatedEvent = new OrderCreateEvent(order.getOrderId(), order.getItems(), order.getNote());
         boolean publishRes=eventPublisherPort.publishEvent(orderCreatedEvent);
         if(!publishRes){
+            stockServicePort.releaseStock(order.getItems());
+            orderRepositoryPort.delete(order.getOrderId());
             return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "Publish event error");
         }
 
         return ResultUtils.success(order.getOrderId());
-
-        // 需要事务，以及如果有状态出问题需要回滚状态
     }
+    //需要处理微服务之间的事务和幂等性
 }

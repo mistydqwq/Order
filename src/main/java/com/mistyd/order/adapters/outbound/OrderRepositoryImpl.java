@@ -57,4 +57,11 @@ public class OrderRepositoryImpl implements OrderRepositoryPort {
         orderVO.setPaymentLink(paymentLink);
         return orderMapper.update(orderVO, updateWrapper) == 1;
     }
+
+    @Override
+    public boolean delete(String orderId) {
+        QueryWrapper<OrderVO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_id", orderId);
+        return orderMapper.delete(queryWrapper) == 1;
+    }
 }

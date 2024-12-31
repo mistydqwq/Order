@@ -10,4 +10,5 @@ public interface OrderRepositoryPort {
     boolean update(Order order);
     boolean updateStatus(String orderId, int status);
     boolean updatePaymentLink(String orderId, String paymentLink);
+    boolean delete(String orderId);
 }

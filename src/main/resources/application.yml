@@ -11,6 +11,13 @@ spring:
   session:
     timeout: 86400
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
