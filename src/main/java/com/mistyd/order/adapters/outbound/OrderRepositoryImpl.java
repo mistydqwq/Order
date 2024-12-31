@@ -39,4 +39,22 @@ public class OrderRepositoryImpl implements OrderRepositoryPort {
         OrderVO orderVO = order.toVO();
         return orderMapper.update(orderVO, updateWrapper) == 1;
     }
+
+    @Override
+    public boolean updateStatus(String orderId, int status) {
+        UpdateWrapper<OrderVO> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("order_id", orderId);
+        OrderVO orderVO = new OrderVO();
+        orderVO.setStatus(status);
+        return orderMapper.update(orderVO, updateWrapper) == 1;
+    }
+
+    @Override
+    public boolean updatePaymentLink(String orderId, String paymentLink) {
+        UpdateWrapper<OrderVO> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("order_id", orderId);
+        OrderVO orderVO = new OrderVO();
+        orderVO.setPaymentLink(paymentLink);
+        return orderMapper.update(orderVO, updateWrapper) == 1;
+    }
 }

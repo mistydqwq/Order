@@ -7,7 +7,8 @@ public enum OrderStatusEnum {
     CREATED(0, "Created"),
     PAID(1, "Paid"),
     FAILED(2, "Failed"),
-    CANCELLED(3, "Cancelled");
+    CANCELLED(3, "Cancelled"),
+    PENDING(4, "Pending");
 
     private final int code;
     private final String description;

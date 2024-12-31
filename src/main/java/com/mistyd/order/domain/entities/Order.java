@@ -36,7 +36,7 @@ public class Order {
     }
 
     public boolean isValid(){
-        if(orderId == null || customerId == null || items == null || status == null || totalAmount == null){
+        if(orderId == null || customerId == null || items == null || status == null){
             return false;
         }
         for(OrderItem item : items){

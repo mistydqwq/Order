@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 public class OrderItem {
     private final String productId;
     private final String productName;
-    private final int quantity;
+    private final Integer quantity;
     private final BigDecimal price;
 }
