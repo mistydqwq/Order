@@ -1,6 +1,6 @@
 spring:
   application:
-    name: oj-backend
+    name: order-service
 
   # DataSource Config
   datasource:
@@ -17,6 +17,29 @@ spring:
     username: guest
     password: guest
     virtual-host: /
+
+#  config:
+#    import: optional:nacos://localhost:8848
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 # Nacos 服务地址
+#      config:
+#        server-addr: localhost:8848 # Nacos 配置中心地址
+#        file-extension: yaml
+#        group: DEFAULT_GROUP
+
+dubbo:
+  application:
+    name: order-service # 服务名
+  registry:
+    address: nacos://localhost:8848 # 使用 Nacos 作为注册中心
+  protocol:
+    name: dubbo
+    port: 20880 # Dubbo 服务端口
+  provider:
+    timeout: 5000
 
 mybatis-plus:
   configuration:
