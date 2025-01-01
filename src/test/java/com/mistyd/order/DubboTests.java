@@ -1,5 +1,6 @@
 package com.mistyd.order;
 
+import com.mistyd.order.adapters.inbound.OrderServiceApi;
 import com.mistyd.order.adapters.inbound.RabbitMQConsumer;
 import com.mistyd.order.adapters.outbound.RabbitMQPublisher;
 import com.mistyd.order.domain.events.OrderCreateEvent;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class DubboTests {
 
     @DubboReference(version = "1.0.0", check = false)
-    private UpdateOrderStatusUseCase updateOrderStatusUseCase;
+    private OrderServiceApi orderServiceApi;
 
     @Test
     void testUpdateOrderStatus() {
@@ -31,7 +32,7 @@ class DubboTests {
         int testStatus = 1;
 
         // 2. 更新订单状态
-        boolean isUpdated = updateOrderStatusUseCase.updateOrderStatus(testOrderId, testStatus);
+        boolean isUpdated = orderServiceApi.updateOrderStatus(testOrderId, testStatus);
 
         // 验证更新是否成功
         assertThat(isUpdated).isTrue();

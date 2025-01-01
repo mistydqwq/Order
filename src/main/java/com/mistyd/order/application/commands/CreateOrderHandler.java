@@ -10,7 +10,7 @@ import com.mistyd.order.domain.valueobj.OrderVO;
 import com.mistyd.order.ports.inbound.CreateOrderUseCase;
 import com.mistyd.order.ports.outbound.EventPublisherPort;
 import com.mistyd.order.ports.outbound.OrderRepositoryPort;
-import com.mistyd.order.ports.outbound.StockServicePort;
+import com.mistyd.order.ports.outbound.StockServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class CreateOrderHandler implements CreateOrderUseCase {
 
     @Autowired
-    private StockServicePort stockServicePort;
+    private StockServiceApi stockServiceApi;
     @Autowired
     private OrderRepositoryPort orderRepositoryPort;
     @Autowired
@@ -43,7 +43,7 @@ public class CreateOrderHandler implements CreateOrderUseCase {
         }
 
         // reserve stock
-        BaseResponse<Boolean>reserveRes=stockServicePort.reserveStock(order.getItems());
+        BaseResponse<Boolean>reserveRes= stockServiceApi.reserveStock(order.getItems());
         if(reserveRes.getCode()!=0 || !reserveRes.getData()){
             return ResultUtils.error(ErrorCode.SYSTEM_ERROR, reserveRes.getDescription());
         }
@@ -53,14 +53,14 @@ public class CreateOrderHandler implements CreateOrderUseCase {
         order.setStatus(OrderStatusEnum.CREATED);
         boolean saveRes=orderRepositoryPort.save(order);
         if(!saveRes){
-            stockServicePort.releaseStock(order.getItems());
+            stockServiceApi.releaseStock(order.getItems());
             return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "Save order error");
         }
 
         OrderCreateEvent orderCreatedEvent = new OrderCreateEvent(order.getOrderId(), order.getItems(), order.getNote());
         boolean publishRes=eventPublisherPort.publishEvent(orderCreatedEvent);
         if(!publishRes){
-            stockServicePort.releaseStock(order.getItems());
+            stockServiceApi.releaseStock(order.getItems());
             orderRepositoryPort.delete(order.getOrderId());
             return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "Publish event error");
         }

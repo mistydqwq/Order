@@ -5,7 +5,7 @@ import com.mistyd.order.ports.inbound.UpdatePaymentLinkUseCase;
 import org.apache.dubbo.config.annotation.DubboService;
 
 @DubboService(version = "1.0.0")
-public class DubboConsumer implements UpdateOrderStatusUseCase, UpdatePaymentLinkUseCase{
+public class DubboConsumer implements OrderServiceApi{
     private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
     private final UpdatePaymentLinkUseCase updatePaymentLinkUseCase;
 
@@ -13,11 +13,11 @@ public class DubboConsumer implements UpdateOrderStatusUseCase, UpdatePaymentLin
         this.updateOrderStatusUseCase = updateOrderStatusUseCase;
         this.updatePaymentLinkUseCase = updatePaymentLinkUseCase;
     }
-
+    @Override
     public Boolean updateOrderStatus(String orderId, int status) {
         return updateOrderStatusUseCase.updateOrderStatus(orderId, status);
     }
-
+    @Override
     public Boolean updatePaymentLink(String orderId, String paymentLink) {
         return updatePaymentLinkUseCase.updatePaymentLink(orderId, paymentLink);
     }
