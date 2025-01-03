@@ -6,6 +6,6 @@ import com.mistyd.order.domain.valueobj.OrderItem;
 import java.util.List;
 
 public interface StockServiceApi {
-    BaseResponse<Boolean> reserveStock(List<OrderItem>list);
-    boolean releaseStock(List<OrderItem>list);
+    BaseResponse<Boolean> reserveStock(String orderId, List<OrderItem>list);
+    boolean releaseStock(String orderId, List<OrderItem>list);
 }

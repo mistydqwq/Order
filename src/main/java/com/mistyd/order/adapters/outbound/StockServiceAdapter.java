@@ -14,13 +14,13 @@ public class StockServiceAdapter implements StockServiceApi {
     //private StockServicePort stockServicePort;
 
     @Override
-    public BaseResponse<Boolean> reserveStock(List<OrderItem> list) {
+    public BaseResponse<Boolean> reserveStock(String orderId, List<OrderItem> list) {
         //return stockServicePort.reserveStock(list);
         return null;
     }
 
     @Override
-    public boolean releaseStock(List<OrderItem> list) {
+    public boolean releaseStock(String orderId, List<OrderItem> list) {
         //return stockServicePort.releaseStock(list);
         return false;
     }
