@@ -34,8 +34,8 @@ public class CreateOrderHandler implements CreateOrderUseCase {
         orderVO.setItems(createOrderCommand.getItems());
         orderVO.setNote(createOrderCommand.getNote());
         Order order = Order.fromVO(orderVO);
-        order.setOrderId(UUID.randomUUID().toString());
-        order.setStatus(OrderStatusEnum.PENDING);
+        order.setOrderId(order.generateOrderId());
+        order.Pending();
 
         // check order
         if(!order.isValid()){
@@ -50,7 +50,7 @@ public class CreateOrderHandler implements CreateOrderUseCase {
 
         // save order
         order.setTotalAmount(order.calculateTotalAmount());
-        order.setStatus(OrderStatusEnum.CREATED);
+        order.Created();
         boolean saveRes=orderRepositoryPort.save(order);
         if(!saveRes){
             stockServiceApi.releaseStock(order.getOrderId(), order.getItems());

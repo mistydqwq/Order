@@ -9,8 +9,9 @@ import lombok.Data;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class Order {
@@ -24,8 +25,8 @@ public class Order {
     private String paymentLink; // 支付链接
     private BigDecimal totalAmount; // 总金额
     private String note; // 备注
-    private Date createTime; // 创建时间
-    private Date updateTime; // 更新时间
+    private LocalDateTime createTime; // 创建时间
+    private LocalDateTime updateTime; // 更新时间
 
     public BigDecimal calculateTotalAmount(){
         BigDecimal totalAmount = BigDecimal.ZERO;
@@ -48,6 +49,25 @@ public class Order {
             return false;
         }
         return true;
+    }
+
+    public String generateOrderId(){
+        if(orderId == null){
+            return UUID.randomUUID().toString();
+        }
+        return orderId;
+    }
+
+    public void Created(){
+        this.status = OrderStatusEnum.CREATED;
+    }
+
+    public void Paid(){
+        this.status = OrderStatusEnum.PAID;
+    }
+
+    public void Pending(){
+        this.status = OrderStatusEnum.PENDING;
     }
 
     public OrderVO toVO(){
