@@ -5,17 +5,16 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mistyd.order.domain.entities.Order;
 import com.mistyd.order.domain.valueobj.OrderVO;
 import com.mistyd.order.ports.outbound.OrderRepositoryPort;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public class OrderRepositoryImpl implements OrderRepositoryPort {
+public class DBRepositoryImpl implements OrderRepositoryPort {
 
     private final OrderMapper orderMapper;
 
-    public OrderRepositoryImpl(OrderMapper orderMapper) {
+    public DBRepositoryImpl(OrderMapper orderMapper) {
         this.orderMapper = orderMapper;
     }
 

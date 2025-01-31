@@ -67,5 +67,4 @@ public class CreateOrderHandler implements CreateOrderUseCase {
 
         return ResultUtils.success(order.getOrderId());
     }
-    //需要处理微服务之间的事务和幂等性
 }
